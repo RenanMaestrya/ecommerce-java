@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    // Primeiro, definimos a classe ErrorResponse
     @Getter
     @Builder
     @AllArgsConstructor
@@ -27,14 +26,12 @@ public class GlobalExceptionHandler {
         private String message;
         private String path;
 
-        // Construtor adicional para mensagem simples
         public ErrorResponse(String message) {
             this.timestamp = LocalDateTime.now();
             this.message = message;
         }
     }
 
-    // Handler para NoResourceFoundException
     @ExceptionHandler(NoResourceFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<ErrorResponse> handleNoResourceFoundException(
@@ -51,7 +48,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
-    // Handler para BusinessException
     @ExceptionHandler(BusinessException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ErrorResponse> handleBusinessException(
@@ -68,7 +64,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
-    // Handler para ResourceNotFoundException
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<ErrorResponse> handleResourceNotFoundException(

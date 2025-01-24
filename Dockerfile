@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17-jdk-alpine as build
+FROM openjdk:17-slim as build
 WORKDIR /workspace/app
 
 # Copiar apenas os arquivos de dependência primeiro
@@ -14,7 +14,7 @@ RUN ./mvnw dependency:go-offline -B
 COPY src src
 RUN ./mvnw package -DskipTests
 
-FROM eclipse-temurin:17-jre-alpine
+FROM openjdk:17-slim
 WORKDIR /app
 COPY --from=build /workspace/app/target/*.jar app.jar
 

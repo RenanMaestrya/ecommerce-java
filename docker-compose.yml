@@ -1,12 +1,12 @@
 services:
   app:
-    image: ${DOCKER_USERNAME}/ecommerce-api:latest
+    build: .
     ports:
-      - "8080:8080"
+      - "8081:8080"  # Mudando porta externa para 8081
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/ecommerce
-      - SPRING_DATASOURCE_USERNAME=${DB_USERNAME}
-      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - SPRING_JPA_SHOW_SQL=false
     depends_on:
