@@ -16,7 +16,7 @@ import br.ifrn.edu.jeferson.ecommerce.domain.Pedido;
 import br.ifrn.edu.jeferson.ecommerce.domain.Produto;
 import br.ifrn.edu.jeferson.ecommerce.domain.dtos.ItemPedidoRequestDTO;
 import br.ifrn.edu.jeferson.ecommerce.domain.dtos.PedidoRequestDTO;
-import br.ifrn.edu.jeferson.ecommerce.domain.dtos.PedidoResponseDTO;
+import br.ifrn.edu.jeferson.ecommerce.domain.dtos.PedidoDTO;
 import br.ifrn.edu.jeferson.ecommerce.domain.enums.StatusPedido;
 import br.ifrn.edu.jeferson.ecommerce.exception.BusinessException;
 import br.ifrn.edu.jeferson.ecommerce.exception.ResourceNotFoundException;
@@ -56,7 +56,7 @@ public class PedidoService {
         }
     }
 
-    public PedidoResponseDTO salvar(PedidoRequestDTO pedidoDto) {
+    public PedidoDTO salvar(PedidoRequestDTO pedidoDto) {
         var produtosIds = pedidoDto.getProdutosIds();
         var produtos = produtoRepository.findAllById(produtosIds);
 
@@ -97,7 +97,7 @@ public class PedidoService {
         return pedidoMapper.toResponseDTO(pedido);
     }
 
-    public Page<PedidoResponseDTO> lista(
+    public Page<PedidoDTO> lista(
         Pageable pageable
     ){
         Page<Pedido> pedidos = pedidoRepository.findAll(pageable);
@@ -111,19 +111,19 @@ public class PedidoService {
         pedidoRepository.deleteById(id);
     }
 
-    public PedidoResponseDTO atualizarStatusPedido(Long id, StatusPedido statusPedido) {
+    public PedidoDTO atualizarStatusPedido(Long id, StatusPedido statusPedido) {
         Pedido pedido = pedidoRepository.findById(id).orElseThrow( () -> new ResourceNotFoundException("Pedido não encontrado"));
         pedido.setStatusPedido(statusPedido);
         pedido = pedidoRepository.save(pedido);
         return pedidoMapper.toResponseDTO(pedido);
     }
 
-    public PedidoResponseDTO buscarPorId(Long id) {
+    public PedidoDTO buscarPorId(Long id) {
         Pedido pedido = pedidoRepository.findById(id).orElseThrow( () -> new ResourceNotFoundException("Pedido não encontrado"));
         return pedidoMapper.toResponseDTO(pedido);
     }
 
-    public List<PedidoResponseDTO> listarPedidosPorCliente(Long clientId) {
+    public List<PedidoDTO> listarPedidosPorCliente(Long clientId) {
         List<Pedido> pedidos = pedidoRepository.findByClienteId(clientId);
         return pedidoMapper.toDTOList(pedidos);
     }

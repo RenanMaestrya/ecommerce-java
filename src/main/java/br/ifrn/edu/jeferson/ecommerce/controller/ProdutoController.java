@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import br.ifrn.edu.jeferson.ecommerce.domain.dtos.ProdutoRequestDTO;
-import br.ifrn.edu.jeferson.ecommerce.domain.dtos.ProdutoResponseDTO;
+import br.ifrn.edu.jeferson.ecommerce.domain.dtos.ProdutoDTO;
 import br.ifrn.edu.jeferson.ecommerce.service.ProdutoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -33,13 +33,13 @@ public class ProdutoController {
 
     @Operation(summary = "Criar um novo produto")
     @PostMapping
-    public ResponseEntity<ProdutoResponseDTO> salvar(@RequestBody ProdutoRequestDTO produtoDto) {
+    public ResponseEntity<ProdutoDTO> salvar(@RequestBody ProdutoRequestDTO produtoDto) {
         return ResponseEntity.ok(produtoService.salvar(produtoDto));
     }
 
     @Operation(summary = "Listar produtos")
     @GetMapping
-    public ResponseEntity<Page<ProdutoResponseDTO>> lista(
+    public ResponseEntity<Page<ProdutoDTO>> lista(
         @RequestParam(required = false) String nome,
         @RequestParam(required = false) BigDecimal precoMaiorQue,
         @RequestParam(required = false) BigDecimal precoMenorQue,
@@ -50,7 +50,7 @@ public class ProdutoController {
 
     @Operation(summary = "Buscar produto por id")
     @GetMapping("/{id}")
-    public ResponseEntity<ProdutoResponseDTO> buscarPorId(Long id) {
+    public ResponseEntity<ProdutoDTO> buscarPorId(Long id) {
         return ResponseEntity.ok(produtoService.buscarPorId(id));
     }
 
@@ -63,19 +63,19 @@ public class ProdutoController {
 
     @Operation(summary = "Atualizar produto")
     @PutMapping("/{id}")
-    public ResponseEntity<ProdutoResponseDTO> atualizar(Long id, @RequestBody ProdutoRequestDTO produtoDto) {
+    public ResponseEntity<ProdutoDTO> atualizar(Long id, @RequestBody ProdutoRequestDTO produtoDto) {
         return ResponseEntity.ok(produtoService.atualizar(id, produtoDto));
     }
 
     @Operation(summary = "Atualizar estoque do produto")
     @PatchMapping("/{id}/estoque")
-    public ResponseEntity<ProdutoResponseDTO> atualizarEstoque(Long id, Integer quantidade) {
+    public ResponseEntity<ProdutoDTO> atualizarEstoque(Long id, Integer quantidade) {
         return ResponseEntity.ok(produtoService.atualizarEstoque(id, quantidade));
     }
 
     @Operation(summary = "Listar produtos por categoria")
     @GetMapping("/categoria/{categoriaId}")
-    public ResponseEntity<List<ProdutoResponseDTO>> buscarPorCategoria(Long categoriaId) {
+    public ResponseEntity<List<ProdutoDTO>> buscarPorCategoria(Long categoriaId) {
         return ResponseEntity.ok(produtoService.buscarPorCategoria(categoriaId));
     }
 }

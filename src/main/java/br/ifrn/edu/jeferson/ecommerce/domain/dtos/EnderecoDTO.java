@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Schema(description = "DTO para resposta de endereço")
-public class EnderecoResponseDTO {
+public class EnderecoDTO {
     @Schema(description = "ID do endereço", example = "1")
     private Long id;
 

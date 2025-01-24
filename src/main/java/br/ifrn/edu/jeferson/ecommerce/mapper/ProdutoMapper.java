@@ -7,7 +7,7 @@ import org.springframework.data.domain.Page;
 
 import br.ifrn.edu.jeferson.ecommerce.domain.Produto;
 import br.ifrn.edu.jeferson.ecommerce.domain.dtos.ProdutoRequestDTO;
-import br.ifrn.edu.jeferson.ecommerce.domain.dtos.ProdutoResponseDTO;
+import br.ifrn.edu.jeferson.ecommerce.domain.dtos.ProdutoDTO;
 
 @Mapper(componentModel = "spring")
 public interface ProdutoMapper {
@@ -16,11 +16,11 @@ public interface ProdutoMapper {
     @Mapping(target = "categorias", ignore = true)
     Produto toEntity(ProdutoRequestDTO produtoRequestDTO);
 
-    ProdutoResponseDTO toResponseDTO(Produto produto);
+    ProdutoDTO toResponseDTO(Produto produto);
 
-    List<ProdutoResponseDTO> toDTOList(List<Produto> produtos);
+    List<ProdutoDTO> toDTOList(List<Produto> produtos);
 
-    default Page<ProdutoResponseDTO> toDTOPage(Page<Produto> produtos) {
+    default Page<ProdutoDTO> toDTOPage(Page<Produto> produtos) {
         return produtos.map(this::toResponseDTO);
     }
 

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Schema(description = "DTO para resposta de item de pedido")
-public class ItemPedidoResponseDTO {
+public class ItemPedidoDTO {
     @Schema(description = "Quantidade do item", example = "1")
     private Integer quantidade;
 

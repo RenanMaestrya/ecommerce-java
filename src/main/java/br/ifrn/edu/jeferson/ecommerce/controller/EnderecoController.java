@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import br.ifrn.edu.jeferson.ecommerce.domain.dtos.EnderecoRequestDTO;
-import br.ifrn.edu.jeferson.ecommerce.domain.dtos.EnderecoResponseDTO;
+import br.ifrn.edu.jeferson.ecommerce.domain.dtos.EnderecoDTO;
 import br.ifrn.edu.jeferson.ecommerce.service.EnderecoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -28,7 +28,7 @@ public class EnderecoController {
 
     @Operation(summary = "Criar um novo endereço para o cliente")
     @PostMapping
-    public ResponseEntity<EnderecoResponseDTO> salvar(
+    public ResponseEntity<EnderecoDTO> salvar(
             @PathVariable Long clientId, 
             @RequestBody EnderecoRequestDTO enderecoDto) {
         return ResponseEntity.ok(enderecoService.salvar(clientId, enderecoDto));
@@ -36,7 +36,7 @@ public class EnderecoController {
 
     @Operation(summary = "Listar endereços de um cliente")
     @GetMapping
-    public ResponseEntity<EnderecoResponseDTO> listar(@PathVariable Long clientId) {
+    public ResponseEntity<EnderecoDTO> listar(@PathVariable Long clientId) {
         return ResponseEntity.ok(enderecoService.listar(clientId));
     }
 
@@ -49,7 +49,7 @@ public class EnderecoController {
 
     @Operation(summary = "Atualizar um endereço de um cliente")
     @PutMapping("/{id}")
-    public ResponseEntity<EnderecoResponseDTO> atualizar(
+    public ResponseEntity<EnderecoDTO> atualizar(
             @PathVariable Long clientId, 
             @PathVariable Long id, 
             @RequestBody EnderecoRequestDTO enderecoDto) {

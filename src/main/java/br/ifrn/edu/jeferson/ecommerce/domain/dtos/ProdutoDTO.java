@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Schema(description = "DTO para resposta de produto")
-public class ProdutoResponseDTO {
+public class ProdutoDTO {
     @Schema(description = "ID do produto", example = "1")
     private Long id;
 
@@ -29,5 +29,5 @@ public class ProdutoResponseDTO {
     private Integer estoque;
 
     @Schema(description = "Categorias do produto")
-    private List<CategoriaResponseDTO> categorias;
+    private List<CategoriaDTO> categorias;
 }

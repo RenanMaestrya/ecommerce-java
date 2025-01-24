@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Schema(description = "DTO para resposta de pedido")
-public class PedidoResponseDTO {
+public class PedidoDTO {
     @Schema(description = "ID do pedido", example = "1")
     private Long id;
 
@@ -31,5 +31,5 @@ public class PedidoResponseDTO {
     private Long clienteId;
 
     @Schema(description = "Itens do pedido")
-    private List<ItemPedidoResponseDTO> itens;
+    private List<ItemPedidoDTO> itens;
 }

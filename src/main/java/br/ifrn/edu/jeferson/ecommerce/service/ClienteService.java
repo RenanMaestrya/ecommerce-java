@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 
 import br.ifrn.edu.jeferson.ecommerce.domain.Cliente;
 import br.ifrn.edu.jeferson.ecommerce.domain.dtos.ClienteRequestDTO;
-import br.ifrn.edu.jeferson.ecommerce.domain.dtos.ClienteResponseDTO;
-import br.ifrn.edu.jeferson.ecommerce.domain.dtos.PedidoResponseDTO;
+import br.ifrn.edu.jeferson.ecommerce.domain.dtos.ClienteDTO;
+import br.ifrn.edu.jeferson.ecommerce.domain.dtos.PedidoDTO;
 import br.ifrn.edu.jeferson.ecommerce.exception.BusinessException;
 import br.ifrn.edu.jeferson.ecommerce.exception.ResourceNotFoundException;
 import br.ifrn.edu.jeferson.ecommerce.mapper.ClienteMapper;
@@ -51,7 +51,7 @@ public class ClienteService {
         verificaSeEmailJaExiste(clienteDto.getEmail());
     }
 
-    public ClienteResponseDTO salvar(ClienteRequestDTO clienteDto) {
+    public ClienteDTO salvar(ClienteRequestDTO clienteDto) {
         validaCliente(clienteDto);
 
         var cliente =  clienteMapper.toEntity(clienteDto);
@@ -59,7 +59,7 @@ public class ClienteService {
         return clienteMapper.toResponseDTO(cliente);
     }
 
-    public Page<ClienteResponseDTO> lista(
+    public Page<ClienteDTO> lista(
         Pageable pageable
     ){
         Page<Cliente> clientes = clienteRepository.findAll(pageable);
@@ -76,7 +76,7 @@ public class ClienteService {
         clienteRepository.deleteById(id);
     }
 
-    public ClienteResponseDTO atualizar(Long id, ClienteRequestDTO clienteDto) {
+    public ClienteDTO atualizar(Long id, ClienteRequestDTO clienteDto) {
         Cliente cliente = clienteRepository.findById(id).orElseThrow( () -> new ResourceNotFoundException("Cliente não encontrado"));
 
         validaCliente(clienteDto);
@@ -87,12 +87,12 @@ public class ClienteService {
         return clienteMapper.toResponseDTO(clienteAlterado);
     }
 
-    public ClienteResponseDTO buscarPorId(Long id) {
+    public ClienteDTO buscarPorId(Long id) {
         Cliente cliente = clienteRepository.findById(id).orElseThrow( () -> new ResourceNotFoundException("Cliente não encontrado"));
         return clienteMapper.toResponseDTO(cliente);
     }
 
-    public List<PedidoResponseDTO> listarPedidosDoCliente(Long id) {
+    public List<PedidoDTO> listarPedidosDoCliente(Long id) {
         Cliente cliente = clienteRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
         return pedidoMapper.toDTOList(cliente.getPedidos());

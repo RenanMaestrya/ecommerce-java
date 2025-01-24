@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import br.ifrn.edu.jeferson.ecommerce.domain.dtos.ClienteRequestDTO;
-import br.ifrn.edu.jeferson.ecommerce.domain.dtos.ClienteResponseDTO;
-import br.ifrn.edu.jeferson.ecommerce.domain.dtos.PedidoResponseDTO;
+import br.ifrn.edu.jeferson.ecommerce.domain.dtos.ClienteDTO;
+import br.ifrn.edu.jeferson.ecommerce.domain.dtos.PedidoDTO;
 import br.ifrn.edu.jeferson.ecommerce.service.ClienteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -31,13 +31,13 @@ public class ClienteController {
 
     @Operation(summary = "Criar um novo cliente")
     @PostMapping
-    public ResponseEntity<ClienteResponseDTO> salvar(@RequestBody ClienteRequestDTO clienteDto) {
+    public ResponseEntity<ClienteDTO> salvar(@RequestBody ClienteRequestDTO clienteDto) {
         return ResponseEntity.ok(clienteService.salvar(clienteDto));
     }
 
     @Operation(summary = "Listar clientes")
     @GetMapping
-    public ResponseEntity<Page<ClienteResponseDTO>> lista(
+    public ResponseEntity<Page<ClienteDTO>> lista(
         Pageable pageable
     ) {
         return ResponseEntity.ok(clienteService.lista(pageable));
@@ -45,7 +45,7 @@ public class ClienteController {
 
     @Operation(summary = "Buscar cliente por id")
     @GetMapping("/{id}")
-    public ResponseEntity<ClienteResponseDTO> buscarPorId(Long id) {
+    public ResponseEntity<ClienteDTO> buscarPorId(Long id) {
         return ResponseEntity.ok(clienteService.buscarPorId(id));
     }
 
@@ -58,13 +58,13 @@ public class ClienteController {
 
     @Operation(summary = "Atualizar cliente")
     @PutMapping("/{id}")
-    public ResponseEntity<ClienteResponseDTO> atualizar(Long id, @RequestBody ClienteRequestDTO clienteDto) {
+    public ResponseEntity<ClienteDTO> atualizar(Long id, @RequestBody ClienteRequestDTO clienteDto) {
         return ResponseEntity.ok(clienteService.atualizar(id, clienteDto));
     }
 
     @Operation(summary = "Listar pedidos do cliente")
     @GetMapping("/{id}/pedidos")
-    public ResponseEntity<List<PedidoResponseDTO>> listarPedidosDoCliente(Long id) {
+    public ResponseEntity<List<PedidoDTO>> listarPedidosDoCliente(Long id) {
         return ResponseEntity.ok(clienteService.listarPedidosDoCliente(id));
     }
 

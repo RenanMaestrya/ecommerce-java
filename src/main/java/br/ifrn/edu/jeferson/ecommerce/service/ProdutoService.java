@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import br.ifrn.edu.jeferson.ecommerce.domain.Categoria;
 import br.ifrn.edu.jeferson.ecommerce.domain.Produto;
 import br.ifrn.edu.jeferson.ecommerce.domain.dtos.ProdutoRequestDTO;
-import br.ifrn.edu.jeferson.ecommerce.domain.dtos.ProdutoResponseDTO;
+import br.ifrn.edu.jeferson.ecommerce.domain.dtos.ProdutoDTO;
 import br.ifrn.edu.jeferson.ecommerce.exception.ResourceNotFoundException;
 import br.ifrn.edu.jeferson.ecommerce.mapper.ProdutoMapper;
 import br.ifrn.edu.jeferson.ecommerce.repository.CategoriaRepository;
@@ -34,7 +34,7 @@ public class ProdutoService {
         return categoriaRepository.findAllById(categoriaIds);
     }
 
-    public ProdutoResponseDTO salvar(ProdutoRequestDTO produtoDto) {
+    public ProdutoDTO salvar(ProdutoRequestDTO produtoDto) {
         var produto =  produtoMapper.toEntity(produtoDto);
         var categorias = buscarCategoriasPorId(produtoDto.getCategoriaIds());        
         produto.setCategorias(categorias);
@@ -42,7 +42,7 @@ public class ProdutoService {
         return produtoMapper.toResponseDTO(produto);
     }
 
-    public Page<ProdutoResponseDTO> lista(
+    public Page<ProdutoDTO> lista(
         Pageable pageable,
         String nome,
         BigDecimal precoMaiorQue,
@@ -63,7 +63,7 @@ public class ProdutoService {
         produtoRepository.deleteById(id);
     }
 
-    public ProdutoResponseDTO atualizar(Long id, ProdutoRequestDTO produtoDto) {
+    public ProdutoDTO atualizar(Long id, ProdutoRequestDTO produtoDto) {
         Produto produto = produtoRepository.findById(id).orElseThrow( () -> new ResourceNotFoundException("Produto não encontrado"));
 
         produtoMapper.updateEntityFromDTO(produtoDto, produto);
@@ -72,12 +72,12 @@ public class ProdutoService {
         return produtoMapper.toResponseDTO(produtoAlterado);
     }
 
-    public ProdutoResponseDTO buscarPorId(Long id) {
+    public ProdutoDTO buscarPorId(Long id) {
         Produto produto = produtoRepository.findById(id).orElseThrow( () -> new ResourceNotFoundException("Produto não encontrado"));
         return produtoMapper.toResponseDTO(produto);
     }
 
-    public ProdutoResponseDTO atualizarEstoque(Long id, Integer quantidade) {
+    public ProdutoDTO atualizarEstoque(Long id, Integer quantidade) {
         Produto produto = produtoRepository.findById(id).orElseThrow( () -> new ResourceNotFoundException("Produto não encontrado"));
         produto.setEstoque(quantidade);
         var produtoAlterado = produtoRepository.save(produto);
@@ -85,7 +85,7 @@ public class ProdutoService {
         return produtoMapper.toResponseDTO(produtoAlterado);
     }
 
-    public List<ProdutoResponseDTO> buscarPorCategoria(Long id) {
+    public List<ProdutoDTO> buscarPorCategoria(Long id) {
         List<Produto> produtos = produtoRepository.findByCategorias_Id(id);
         return produtoMapper.toDTOList(produtos);
     }

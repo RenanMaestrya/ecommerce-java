@@ -9,13 +9,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Schema(description = "DTO para resposta de categoria")
-public class CategoriaResponseDTO {
-    @Schema(description = "ID da categoria", example = "1")
+public class CategoriaDTO {
+    @Schema(description = "ID da categoria", example = "5")
     private Long id;
 
-    @Schema(description = "Nome da categoria", example = "Eletrônicos")
+    @Schema(description = "Nome da categoria", example = "Smartphones")
     private String nome;
 
-    @Schema(description = "Descrição da categoria", example = "Produtos eletrônicos em geral")
+    @Schema(description = "Descrição da categoria", example = "Produtos em geral")
     private String descricao;
 }

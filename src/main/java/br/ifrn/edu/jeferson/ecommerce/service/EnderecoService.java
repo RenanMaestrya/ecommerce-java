@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import br.ifrn.edu.jeferson.ecommerce.domain.Cliente;
 import br.ifrn.edu.jeferson.ecommerce.domain.Endereco;
 import br.ifrn.edu.jeferson.ecommerce.domain.dtos.EnderecoRequestDTO;
-import br.ifrn.edu.jeferson.ecommerce.domain.dtos.EnderecoResponseDTO;
+import br.ifrn.edu.jeferson.ecommerce.domain.dtos.EnderecoDTO;
 import br.ifrn.edu.jeferson.ecommerce.exception.ResourceNotFoundException;
 import br.ifrn.edu.jeferson.ecommerce.mapper.EnderecoMapper;
 import br.ifrn.edu.jeferson.ecommerce.repository.EnderecoRepository;
@@ -25,7 +25,7 @@ public class EnderecoService {
     @Autowired
     private EnderecoMapper mapper;
 
-    public EnderecoResponseDTO salvar(Long clientId, EnderecoRequestDTO enderecoDto) {
+    public EnderecoDTO salvar(Long clientId, EnderecoRequestDTO enderecoDto) {
         // Verifica se o cliente existe
         Cliente cliente = clienteRepository.findById(clientId)
                 .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
@@ -44,7 +44,7 @@ public class EnderecoService {
         return mapper.toResponseDTO(endereco);
     }
 
-    public EnderecoResponseDTO listar(Long clientId) {
+    public EnderecoDTO listar(Long clientId) {
         // Verifica se o cliente existe
         if (!clienteRepository.existsById(clientId)) {
             throw new ResourceNotFoundException("Cliente não encontrado");
@@ -68,7 +68,7 @@ public class EnderecoService {
         enderecoRepository.delete(endereco);
     }
 
-    public EnderecoResponseDTO atualizar(Long clientId, Long id, EnderecoRequestDTO enderecoDto) {
+    public EnderecoDTO atualizar(Long clientId, Long id, EnderecoRequestDTO enderecoDto) {
         // Verifica se o cliente existe
         if (!clienteRepository.existsById(clientId)) {
             throw new ResourceNotFoundException("Cliente não encontrado");
