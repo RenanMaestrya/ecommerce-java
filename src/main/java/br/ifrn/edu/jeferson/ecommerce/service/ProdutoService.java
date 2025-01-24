@@ -19,6 +19,11 @@ import br.ifrn.edu.jeferson.ecommerce.repository.CategoriaRepository;
 import br.ifrn.edu.jeferson.ecommerce.repository.ProdutoRepository;
 import br.ifrn.edu.jeferson.ecommerce.specification.ProdutoSpecification;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+
+@Slf4j
 @Service
 public class ProdutoService {
     @Autowired
@@ -34,7 +39,9 @@ public class ProdutoService {
         return categoriaRepository.findAllById(categoriaIds);
     }
 
+    @CacheEvict(value = "produtos", allEntries = true)
     public ProdutoDTO salvar(ProdutoRequestDTO produtoDto) {
+        log.info("Salvando novo produto: {}", produtoDto.getNome());
         var produto =  produtoMapper.toEntity(produtoDto);
         var categorias = buscarCategoriasPorId(produtoDto.getCategoriaIds());        
         produto.setCategorias(categorias);
@@ -63,7 +70,9 @@ public class ProdutoService {
         produtoRepository.deleteById(id);
     }
 
+    @CacheEvict(value = "produtos", key = "#id")
     public ProdutoDTO atualizar(Long id, ProdutoRequestDTO produtoDto) {
+        log.info("Atualizando produto ID: {}", id);
         Produto produto = produtoRepository.findById(id).orElseThrow( () -> new ResourceNotFoundException("Produto não encontrado"));
 
         produtoMapper.updateEntityFromDTO(produtoDto, produto);
@@ -72,7 +81,9 @@ public class ProdutoService {
         return produtoMapper.toResponseDTO(produtoAlterado);
     }
 
+    @Cacheable(value = "produtos", key = "#id")
     public ProdutoDTO buscarPorId(Long id) {
+        log.info("Buscando produto por ID: {}", id);
         Produto produto = produtoRepository.findById(id).orElseThrow( () -> new ResourceNotFoundException("Produto não encontrado"));
         return produtoMapper.toResponseDTO(produto);
     }

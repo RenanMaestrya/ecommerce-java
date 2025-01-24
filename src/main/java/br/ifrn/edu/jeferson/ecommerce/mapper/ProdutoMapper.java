@@ -14,8 +14,10 @@ public interface ProdutoMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "categorias", ignore = true)
+    @Mapping(target = "quantidadeEstoque", source = "estoque")
     Produto toEntity(ProdutoRequestDTO produtoRequestDTO);
 
+    @Mapping(target = "estoque", source = "quantidadeEstoque")
     ProdutoDTO toResponseDTO(Produto produto);
 
     List<ProdutoDTO> toDTOList(List<Produto> produtos);
@@ -27,5 +29,6 @@ public interface ProdutoMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "categorias", ignore = true)
+    @Mapping(target = "quantidadeEstoque", source = "estoque")
     void updateEntityFromDTO(ProdutoRequestDTO produtoRequestDTO, @MappingTarget Produto produto);
 }

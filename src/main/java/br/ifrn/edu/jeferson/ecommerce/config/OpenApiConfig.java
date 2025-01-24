@@ -13,6 +13,6 @@ public class OpenApiConfig {
                 .info(new Info()
                         .title("API de E-commerce")
                         .version("1.0.0")
-                        .description("API para gerenciamento de categorias e produtos da Empresa Queiroga"));
+                        .description("API para gerenciamento de categorias e produtos"));
     }
 }
