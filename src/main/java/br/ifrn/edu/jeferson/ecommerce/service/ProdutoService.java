@@ -79,7 +79,7 @@ public class ProdutoService {
 
     public ProdutoDTO atualizarEstoque(Long id, Integer quantidade) {
         Produto produto = produtoRepository.findById(id).orElseThrow( () -> new ResourceNotFoundException("Produto não encontrado"));
-        produto.setEstoque(quantidade);
+        produto.setQuantidadeEstoque(quantidade);
         var produtoAlterado = produtoRepository.save(produto);
 
         return produtoMapper.toResponseDTO(produtoAlterado);

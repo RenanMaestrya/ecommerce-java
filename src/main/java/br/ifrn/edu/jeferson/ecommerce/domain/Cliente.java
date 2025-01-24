@@ -12,6 +12,10 @@ import java.util.List;
 @Setter
 @Getter
 @NoArgsConstructor
+@Table(uniqueConstraints = {
+    @UniqueConstraint(columnNames = "cpf", name = "uk_cliente_cpf"),
+    @UniqueConstraint(columnNames = "email", name = "uk_cliente_email")
+})
 public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

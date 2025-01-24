@@ -19,8 +19,12 @@ public class Produto {
     private Long id;
     private String nome;
     private String descricao;
+    
+    @Column(nullable = false)
     private BigDecimal preco;
-    private Integer estoque;
+    
+    @Column(nullable = false)
+    private Integer quantidadeEstoque;
 
     @ManyToMany
     @JoinTable(name = "produto_categoria",
@@ -28,4 +32,16 @@ public class Produto {
             inverseJoinColumns = @JoinColumn(name = "categoria_id"))
     private List<Categoria> categorias = new ArrayList<>();
 
+    public void validarPreco() {
+        if (this.preco.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("Preço não pode ser negativo");
+        }
+    }
+
+    public void debitarEstoque(int quantidade) {
+        if (this.quantidadeEstoque < quantidade) {
+            throw new IllegalStateException("Estoque insuficiente");
+        }
+        this.quantidadeEstoque -= quantidade;
+    }
 }

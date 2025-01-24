@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +11,7 @@ import java.util.List;
 @Setter
 @Getter
 @NoArgsConstructor
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = "nome", name = "uk_categoria_nome"))
 public class Categoria {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

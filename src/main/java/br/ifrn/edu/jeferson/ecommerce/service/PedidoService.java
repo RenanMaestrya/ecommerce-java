@@ -1,7 +1,6 @@
 package br.ifrn.edu.jeferson.ecommerce.service;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +50,7 @@ public class PedidoService {
     }
 
     private void verificaSeProdutoTemEstoqueSuficiente(Produto produto, Integer quantidade) {
-        if (produto.getEstoque() < quantidade) {
+        if (produto.getQuantidadeEstoque() < quantidade) {
             throw new BusinessException("Estoque insuficiente para o produto " + produto.getNome());
         }
     }
@@ -80,7 +79,7 @@ public class PedidoService {
 
             itens.add(itemPedido);
             
-            produto.setEstoque(produto.getEstoque() - item.getQuantidade());
+            produto.setQuantidadeEstoque(produto.getQuantidadeEstoque() - item.getQuantidade());
             atualizacaoDeEstoque.add(produto);
         }
 
