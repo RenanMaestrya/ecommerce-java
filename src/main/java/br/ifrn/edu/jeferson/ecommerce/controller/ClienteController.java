@@ -20,6 +20,8 @@ import br.ifrn.edu.jeferson.ecommerce.domain.dtos.PedidoDTO;
 import br.ifrn.edu.jeferson.ecommerce.service.ClienteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 
 @Controller
 @RequestMapping("/api/clientes")
@@ -37,6 +39,15 @@ public class ClienteController {
 
     @Operation(summary = "Listar clientes")
     @GetMapping
+    @Parameter(name = "sort", in = ParameterIn.QUERY, 
+        description = "Ordenação dos resultados. Formato: propriedade,direção. Ex: nome,asc", 
+        example = "nome,asc")
+    @Parameter(name = "page", in = ParameterIn.QUERY, 
+        description = "Número da página (começa em 0)", 
+        example = "0")
+    @Parameter(name = "size", in = ParameterIn.QUERY, 
+        description = "Quantidade de elementos por página", 
+        example = "10")
     public ResponseEntity<Page<ClienteDTO>> lista(
         Pageable pageable
     ) {

@@ -13,7 +13,7 @@ public class EnderecoDTO {
     @Schema(description = "ID do endereço", example = "1")
     private Long id;
 
-    @Schema(description = "Rua do endereço", example = "Rua dos Bobos")
+    @Schema(description = "Rua do endereço", example = "Rua da tristeza")
     private String rua;
 
     @Schema(description = "Número do endereço", example = "0")

@@ -14,8 +14,10 @@ import br.ifrn.edu.jeferson.ecommerce.repository.ProdutoRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class CategoriaService {
@@ -31,26 +33,45 @@ public class CategoriaService {
     @Autowired
     private ProdutoMapper produtoMapper;
 
+    private static final Logger logger = LoggerFactory.getLogger(CategoriaService.class);
+
     private void verificaSeTemProduto(Long id) {
         if (produtoRepository.existsByCategorias_Id(id)) {
             throw new BusinessException("Não é possível deletar uma categoria que possui produtos associados");
         }
     }
 
+    private void validarCategoria(CategoriaRequestDTO categoriaDto) {
+        if (categoriaDto.getNome().trim().isEmpty()) {
+            throw new BusinessException("Nome da categoria não pode estar vazio");
+        }
+        
+        if (categoriaDto.getDescricao() != null && 
+            categoriaDto.getDescricao().length() > 500) {
+            throw new BusinessException("Descrição da categoria não pode ter mais que 500 caracteres");
+        }
+    }
+
     public CategoriaDTO salvar(CategoriaRequestDTO categoriaDto) {
-        var categoria =  mapper.toEntity(categoriaDto);
+        logger.info("Iniciando o processo para salvar ad categoria: {}", categoriaDto);
+
+        var categoria = mapper.toEntity(categoriaDto);
 
         if (categoriaRepository.existsByNome(categoria.getNome())) {
+            logger.warn("Nome já existente: {}", categoria.getNome());
             throw new BusinessException("Já existe uma categoria com esse nome");
         }
 
         categoriaRepository.save(categoria);
+        logger.info("Categoria salva: {}", categoria);
+
         return mapper.toResponseDTO(categoria);
     }
 
-    public List<CategoriaDTO> lista(){
-        List<Categoria> categorias = categoriaRepository.findAll();
-        return mapper.toDTOList (categorias);
+    public Page<CategoriaDTO> lista(Pageable pageable) {
+        logger.info("Listando categorias com paginação {}", pageable);
+        Page<Categoria> categorias = categoriaRepository.findAll(pageable);
+        return categorias.map(mapper::toResponseDTO);
     }
 
     public void deletar(Long id) {

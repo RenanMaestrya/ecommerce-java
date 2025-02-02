@@ -25,8 +25,16 @@ import br.ifrn.edu.jeferson.ecommerce.repository.ItemPedidoRepository;
 import br.ifrn.edu.jeferson.ecommerce.repository.PedidoRepository;
 import br.ifrn.edu.jeferson.ecommerce.repository.ProdutoRepository;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
+import br.ifrn.edu.jeferson.ecommerce.exception.OrderReferencedByItemsException;
+import org.springframework.transaction.annotation.Transactional;
+
 @Service
 public class PedidoService {
+
+    private static final Logger logger = LoggerFactory.getLogger(PedidoService.class);
     
     @Autowired
     private PedidoRepository pedidoRepository;
@@ -55,7 +63,22 @@ public class PedidoService {
         }
     }
 
+    private void validarPedido(PedidoRequestDTO pedidoDto) {
+        if (pedidoDto.getProdutosIds() == null || pedidoDto.getProdutosIds().isEmpty()) {
+            throw new BusinessException("Pedido deve conter pelo menos um produto");
+        }
+        
+        if (pedidoDto.getItensPedido().stream()
+                .anyMatch(item -> item.getQuantidade() <= 0)) {
+            throw new BusinessException("Quantidade de itens deve ser maior que zero");
+        }
+    }
+
     public PedidoDTO salvar(PedidoRequestDTO pedidoDto) {
+        logger.info("Iniciando criação de novo pedido para cliente ID: {}", pedidoDto.getClienteId());
+        
+        validarPedido(pedidoDto);
+        
         var produtosIds = pedidoDto.getProdutosIds();
         var produtos = produtoRepository.findAllById(produtosIds);
 
@@ -96,18 +119,19 @@ public class PedidoService {
         return pedidoMapper.toResponseDTO(pedido);
     }
 
-    public Page<PedidoDTO> lista(
-        Pageable pageable
-    ){
+    public Page<PedidoDTO> lista(Pageable pageable) {
         Page<Pedido> pedidos = pedidoRepository.findAll(pageable);
-        return pedidoMapper.toDTOPage(pedidos);
+        return pedidos.map(pedidoMapper::toResponseDTO);
     }
 
+    @Transactional
     public void deletar(Long id) {
-        if (!pedidoRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Pedido não encontrado");
-        }
-        pedidoRepository.deleteById(id);
+        var pedido = pedidoRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Pedido não encontrado"));
+
+        itemPedidoRepository.deleteByPedidoId(id);
+        
+        pedidoRepository.delete(pedido);
     }
 
     public PedidoDTO atualizarStatusPedido(Long id, StatusPedido statusPedido) {

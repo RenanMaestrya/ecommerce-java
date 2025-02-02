@@ -17,6 +17,8 @@ import br.ifrn.edu.jeferson.ecommerce.mapper.ClienteMapper;
 import br.ifrn.edu.jeferson.ecommerce.mapper.PedidoMapper;
 import br.ifrn.edu.jeferson.ecommerce.repository.ClienteRepository;
 
+
+
 @Service
 public class ClienteService {
     @Autowired
@@ -59,11 +61,9 @@ public class ClienteService {
         return clienteMapper.toResponseDTO(cliente);
     }
 
-    public Page<ClienteDTO> lista(
-        Pageable pageable
-    ){
+    public Page<ClienteDTO> lista(Pageable pageable) {
         Page<Cliente> clientes = clienteRepository.findAll(pageable);
-        return clienteMapper.toDTOPage(clientes);
+        return clientes.map(clienteMapper::toResponseDTO);
     }
 
     public void deletar(Long id) {
@@ -97,5 +97,4 @@ public class ClienteService {
             .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
         return pedidoMapper.toDTOList(cliente.getPedidos());
     }
-
 }

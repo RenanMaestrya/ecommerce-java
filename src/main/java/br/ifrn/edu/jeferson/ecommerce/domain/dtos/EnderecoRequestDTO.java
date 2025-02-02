@@ -10,7 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @Schema(description = "DTO para requisição de endereço")
 public class EnderecoRequestDTO {
-    @Schema(description = "Rua do endereço", example = "Rua dos Bobos")
+    @Schema(description = "Rua do endereço", example = "Rua da tristeza")
     @NotBlank(message = "Rua é obrigatória")
     private String rua;
 
@@ -22,7 +22,7 @@ public class EnderecoRequestDTO {
     @NotBlank(message = "Bairro é obrigatório")
     private String bairro;
 
-    @Schema(description = "Cidade do endereço", example = "Natal")
+    @Schema(description = "Cidade do endereço", example = "Mossoró")
     @NotBlank(message = "Cidade é obrigatória")
     private String cidade;
 

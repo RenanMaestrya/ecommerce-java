@@ -16,13 +16,13 @@ public class ProdutoDTO {
     @Schema(description = "ID do produto", example = "1")
     private Long id;
 
-    @Schema(description = "Nome do produto", example = "Notebook")
+    @Schema(description = "Nome do produto", example = "Macbook Pro")
     private String nome;
 
-    @Schema(description = "Descrição do produto", example = "Notebook Dell")
+    @Schema(description = "Descrição do produto", example = "Notebook da Apple")
     private String descricao;
 
-    @Schema(description = "Valor do produto", example = "1000.00")
+    @Schema(description = "Valor do produto", example = "6000.00")
     private BigDecimal preco;
 
     @Schema(description = "Quantidade em estoque do produto", example = "10")

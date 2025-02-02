@@ -14,6 +14,7 @@ import br.ifrn.edu.jeferson.ecommerce.domain.Produto;
 import br.ifrn.edu.jeferson.ecommerce.domain.dtos.ProdutoRequestDTO;
 import br.ifrn.edu.jeferson.ecommerce.domain.dtos.ProdutoDTO;
 import br.ifrn.edu.jeferson.ecommerce.exception.ResourceNotFoundException;
+import br.ifrn.edu.jeferson.ecommerce.exception.ProductReferencedInOrderException;
 import br.ifrn.edu.jeferson.ecommerce.mapper.ProdutoMapper;
 import br.ifrn.edu.jeferson.ecommerce.repository.CategoriaRepository;
 import br.ifrn.edu.jeferson.ecommerce.repository.ProdutoRepository;
@@ -22,6 +23,7 @@ import br.ifrn.edu.jeferson.ecommerce.specification.ProdutoSpecification;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.dao.DataIntegrityViolationException;
 
 @Slf4j
 @Service
@@ -64,10 +66,11 @@ public class ProdutoService {
     }
 
     public void deletar(Long id) {
-        if (!produtoRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Produto não encontrado");
+        try {
+            produtoRepository.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new ProductReferencedInOrderException(id);
         }
-        produtoRepository.deleteById(id);
     }
 
     @CacheEvict(value = "produtos", key = "#id")

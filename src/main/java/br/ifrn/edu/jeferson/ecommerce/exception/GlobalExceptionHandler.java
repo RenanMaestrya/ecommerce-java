@@ -89,4 +89,20 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(400)
                 .body(new ErrorResponse(ex.getMessage()));
     }
+
+    @ExceptionHandler(OrderReferencedByItemsException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<ErrorResponse> handleOrderReferencedByItems(
+            OrderReferencedByItemsException ex,
+            WebRequest request) {
+
+        ErrorResponse error = ErrorResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.CONFLICT.value())
+                .message(ex.getMessage())
+                .path(((ServletWebRequest) request).getRequest().getRequestURI())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+    }
 }
