@@ -41,17 +41,6 @@ public class CategoriaService {
         }
     }
 
-    private void validarCategoria(CategoriaRequestDTO categoriaDto) {
-        if (categoriaDto.getNome().trim().isEmpty()) {
-            throw new BusinessException("Nome da categoria não pode estar vazio");
-        }
-        
-        if (categoriaDto.getDescricao() != null && 
-            categoriaDto.getDescricao().length() > 500) {
-            throw new BusinessException("Descrição da categoria não pode ter mais que 500 caracteres");
-        }
-    }
-
     public CategoriaDTO salvar(CategoriaRequestDTO categoriaDto) {
         logger.info("Iniciando o processo para salvar ad categoria: {}", categoriaDto);
 

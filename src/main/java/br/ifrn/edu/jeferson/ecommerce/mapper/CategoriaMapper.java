@@ -12,7 +12,6 @@ public interface CategoriaMapper {
 
     CategoriaDTO toResponseDTO(Categoria categoria);
 
-    // Converter DTO para Categoria
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "produtos", ignore = true)
     Categoria toEntity(CategoriaRequestDTO dto);

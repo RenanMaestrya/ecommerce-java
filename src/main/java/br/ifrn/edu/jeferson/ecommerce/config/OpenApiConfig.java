@@ -11,8 +11,8 @@ public class OpenApiConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("API de E-commerce")
+                        .title("API E-commerce")
                         .version("1.0.0")
-                        .description("API para gerenciamento de categorias e produtos"));
+                        .description("API para gerenciamento de ecommerce"));
     }
 }
